@@ -2,12 +2,12 @@
 mod process;
 
 pub struct Data {
-    pub payload: &'static str,
+    pub payload: Vec<Vec<f64>>,
 }
 
 impl Data {
     pub fn start(&self) {
-        let runner = process::Max::new();
+        let runner = process::Max::new(self.payload.clone());
         runner.run();
     }
 }

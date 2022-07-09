@@ -2,16 +2,16 @@
 mod utils;
 
 pub struct Max {
-    pub data: &'static str,
+    pub input_payload: Vec<Vec<f64>>,
     pub layerCount: i32,
     pub layers: Vec<utils::layer::Layer>,
 }
 
 impl Max {
-    pub fn new() -> Max {
+    pub fn new(input: Vec<Vec<f64>>) -> Max {
         let mut max = Max {
-            data: "",
-            layerCount: 10,
+            input_payload: input,
+            layerCount: 4,
             layers: Vec::new(),
         };
 
@@ -20,19 +20,16 @@ impl Max {
             max.layers.push(layer);
         }
 
-        const BIAS: f64 = 10.0;
-        for layer in &max.layers {
-            if (layer.index == 0) {
+        for layer in 0..max.layers.len() {
+            if max.layers[layer].index == 0 || max.layers[layer].index == max.layerCount - 1 {
                 continue;
-            };
-            let mut sum: f64 = 0.0;
-            for weight in &layer.weights {
-                for neuron in &layer.neurons {
-                    sum += neuron.activation * weight.value;
+            }
+            for neuron in 0..max.layers[layer].height {
+                for cWeight in 0..max.layers[layer + 1].weights.len() {
+                    let mut weight = utils::weight::Weight::new(layer as i32 + 1);
+                    max.layers[layer + 1].weights[cWeight] = weight;
                 }
             }
-            sum -= BIAS;
-            println!("{:?}", sigmoid(sum));
         }
 
         return max;

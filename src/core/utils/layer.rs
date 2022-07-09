@@ -15,18 +15,15 @@ pub struct Layer {
 impl Layer {
     pub fn new(index: i32) -> Layer {
         let mut layer = Layer {
+            index: index,
             height: 16,
             neurons: Vec::new(),
             weights: Vec::new(),
-            index: index,
         };
 
         for i in 0..layer.height {
             let neuron = neuron::Neuron::new(index);
-            let weight = weight::Weight::new(index);
-
             layer.neurons.push(neuron);
-            layer.weights.push(weight);
         }
 
         return layer;
