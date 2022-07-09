@@ -16,15 +16,30 @@ impl Max {
         };
 
         for i in 0..max.layerCount {
-            let layer = utils::layer::Layer::new();
+            let layer = utils::layer::Layer::new(i);
             max.layers.push(layer);
+        }
+
+        const BIAS: f64 = 10.0;
+        for layer in &max.layers {
+            if (layer.index == 0) {
+                continue;
+            };
+            let mut sum: f64 = 0.0;
+            for weight in &layer.weights {
+                for neuron in &layer.neurons {
+                    sum += neuron.activation * weight.value;
+                }
+            }
+            sum -= BIAS;
+            println!("{:?}", sigmoid(sum));
         }
 
         return max;
     }
 
     pub fn run(&self) {
-        println!("{:?}", self.layers);
+        //println!("{:?}", self.layers);
     }
 }
 

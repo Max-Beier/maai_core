@@ -1,10 +1,16 @@
 #[derive(Debug)]
 pub struct Neuron {
-    pub value: f64,
+    pub activation: f64,
+    pub sum: f64,
+    layerIndex: i32,
 }
 
 impl Neuron {
-    pub fn new() -> Neuron {
-        return Neuron { value: 0.0 };
+    pub fn new(layerIndex: i32) -> Neuron {
+        return Neuron {
+            activation: 0.0,
+            sum: 0.0,
+            layerIndex: layerIndex,
+        };
     }
 }
