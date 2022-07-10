@@ -2,6 +2,8 @@ use crate::core::utils::layer::*;
 use crate::core::utils::neuron::*;
 use crate::core::utils::weight::*;
 
+use super::utils::weight;
+
 pub struct Max {
     pub input_payload: Vec<Vec<f64>>,
     pub layerCount: i32,
@@ -24,8 +26,7 @@ impl Max {
         for layerIndex in 0..max.layers.len() {
             for layerHeight in 0..max.layers[layerIndex].height {
                 let neuron = Neuron {
-                    activation: 0.0,
-                    sum: 0.0,
+                    activation: 1.0,
                     layerIndex: max.layers[layerIndex].index,
                 };
 
@@ -35,17 +36,27 @@ impl Max {
                 }
 
                 let nextNeuron = Neuron {
-                    activation: 0.0,
-                    sum: 0.0,
+                    activation: 1.0,
                     layerIndex: max.layers[layerIndex + 1].index,
                 };
 
-                let weight = Weight {
-                    value: 0.0,
+                let mut weight = Weight {
+                    value: 1.0,
+                    bias: 10.0,
                     startNeuron: neuron,
                     endNeuron: nextNeuron,
                     layerIndex: max.layers[layerIndex + 1].index,
                 };
+
+                let mut sum: f64 = 0.0;
+                for weightIndex in 0..max.layers[layerIndex].weights.len() {
+                    sum += max.layers[layerIndex].weights[weightIndex].value
+                        * max.layers[layerIndex].weights[weightIndex]
+                            .startNeuron
+                            .activation;
+                }
+
+                weight.endNeuron.activation += sigmoid(sum - weight.bias);
 
                 max.layers[layerIndex].weights.push(weight);
             }
