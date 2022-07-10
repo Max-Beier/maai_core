@@ -2,7 +2,7 @@ use crate::core::utils::layer::*;
 use crate::core::utils::neuron::*;
 use crate::core::utils::weight::*;
 
-use super::utils::weight;
+use rand::Rng;
 
 pub struct Max {
     pub input_payload: Vec<Vec<f64>>,
@@ -12,6 +12,7 @@ pub struct Max {
 
 impl Max {
     pub fn new(input: Vec<Vec<f64>>) -> Max {
+        let mut rng = rand::thread_rng();
         let mut max = Max {
             input_payload: input,
             layerCount: 4,
@@ -26,7 +27,7 @@ impl Max {
         for layerIndex in 0..max.layers.len() {
             for layerHeight in 0..max.layers[layerIndex].height {
                 let neuron = Neuron {
-                    activation: 1.0,
+                    activation: rng.gen::<f64>(),
                     layerIndex: max.layers[layerIndex].index,
                 };
 
@@ -36,13 +37,14 @@ impl Max {
                 }
 
                 let nextNeuron = Neuron {
-                    activation: 1.0,
+                    activation: rng.gen::<f64>(),
                     layerIndex: max.layers[layerIndex + 1].index,
                 };
 
                 let mut weight = Weight {
-                    value: 1.0,
-                    bias: 10.0,
+                    index: layerHeight as u8,
+                    value: rng.gen::<f64>(),
+                    bias: rng.gen::<f64>(),
                     startNeuron: neuron,
                     endNeuron: nextNeuron,
                     layerIndex: max.layers[layerIndex + 1].index,
@@ -66,7 +68,19 @@ impl Max {
     }
 
     pub fn run(&self) {
-        println!("{:?}", self.layers);
+        println!("{:?}", self.get_cost());
+    }
+
+    pub fn get_cost(&self) -> f64 {
+        let mut v: f64 = 0.0;
+        let mut n: f64 = 0.0;
+        for layerIndex in 0..self.layers.len() {
+            for heightIndex in 0..self.layers[layerIndex].weights.len() {
+                n += heightIndex as f64;
+                v += self.layers[layerIndex].weights[heightIndex].value;
+            }
+        }
+        return v / n;
     }
 }
 
