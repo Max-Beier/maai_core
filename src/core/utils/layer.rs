@@ -8,11 +8,11 @@ pub struct Layer {
 }
 
 impl Layer {
-    pub fn new(index: i32) -> Layer {
-        return Layer {
-            index: index,
+    pub fn new(index_: i32) -> Layer {
+        Layer {
+            index: index_,
             height: 16,
             weights: Vec::new(),
-        };
+        }
     }
 }

@@ -4,8 +4,8 @@ pub struct Data {
 }
 
 impl Data {
-    pub fn start(&self) {
-        let runner = Maai::new(self.payload.clone());
+    pub fn start(self) {
+        let runner = Maai::new(self.payload);
         runner.run();
     }
 }
