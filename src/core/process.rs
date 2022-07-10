@@ -1,10 +1,9 @@
-#[path = "./utils/mod.rs"]
-mod utils;
+use crate::core::utils::layer::*;
 
 pub struct Max {
     pub input_payload: Vec<Vec<f64>>,
     pub layerCount: i32,
-    pub layers: Vec<utils::layer::Layer>,
+    pub layers: Vec<Layer>,
 }
 
 impl Max {
@@ -16,20 +15,8 @@ impl Max {
         };
 
         for i in 0..max.layerCount {
-            let layer = utils::layer::Layer::new(i);
+            let layer = Layer::new(i);
             max.layers.push(layer);
-        }
-
-        for layer in 0..max.layers.len() {
-            if max.layers[layer].index == 0 || max.layers[layer].index == max.layerCount - 1 {
-                continue;
-            }
-            for neuron in 0..max.layers[layer].height {
-                for cWeight in 0..max.layers[layer + 1].weights.len() {
-                    let mut weight = utils::weight::Weight::new(layer as i32 + 1);
-                    max.layers[layer + 1].weights[cWeight] = weight;
-                }
-            }
         }
 
         return max;
