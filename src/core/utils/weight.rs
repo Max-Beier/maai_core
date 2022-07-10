@@ -1,10 +1,9 @@
-#[path = "./neuron.rs"]
-pub(crate) mod neuron;
+use crate::core::utils::neuron::*;
 
 #[derive(Debug)]
 pub struct Weight {
     pub value: f64,
-    pub startNeuron: neuron::Neuron,
-    pub endNeuron: neuron::Neuron,
+    pub startNeuron: Neuron,
+    pub endNeuron: Neuron,
     pub layerIndex: i32,
 }
