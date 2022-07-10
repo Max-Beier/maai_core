@@ -36,34 +36,34 @@ impl Maai {
             maai.layers.push(layer);
         }
 
-        for layer in &maai.layers {
-            for _ in 0..layer.height {
+        for layer_index in 0..maai.layers.len() {
+            for _ in 0..maai.layers[layer_index].height {
                 let neuron = Neuron {
                     activation: rng.gen::<f64>(),
-                    layer_index: layer.index,
+                    layer_index: maai.layers[layer_index].index,
                 };
 
                 let next_neuron = Neuron {
                     activation: rng.gen::<f64>(),
-                    layer_index: layer.index + 1,
+                    layer_index: maai.layers[layer_index].index + 1,
                 };
 
                 let mut weight = Weight {
-                    index: layer.height as u8,
+                    index: maai.layers[layer_index].height as u8,
                     value: rng.gen::<f64>(),
                     bias: rng.gen::<f64>(),
                     start_neuron: neuron,
                     end_neuron: next_neuron,
-                    layer_index: layer.index + 1,
+                    layer_index: maai.layers[layer_index].index + 1,
                 };
 
                 let mut sum: f64 = 0.0;
-                for weight in &layer.weights {
+                for weight in &maai.layers[layer_index].weights {
                     sum += weight.value * weight.start_neuron.activation;
                 }
 
                 weight.end_neuron.activation += relu(sum - weight.bias);
-                //layer.weights.push(weight);
+                maai.layers[layer_index].weights.push(weight);
             }
         }
         maai
