@@ -4,41 +4,41 @@ use crate::core::utils::weight::*;
 
 use rand::Rng;
 
-pub struct Max {
+pub struct Maai {
     pub input_payload: Vec<Vec<f64>>,
     pub layerCount: i32,
     pub layers: Vec<Layer>,
 }
 
-impl Max {
-    pub fn new(input: Vec<Vec<f64>>) -> Max {
+impl Maai {
+    pub fn new(input: Vec<Vec<f64>>) -> Maai {
         let mut rng = rand::thread_rng();
-        let mut max = Max {
+        let mut maai = Maai {
             input_payload: input,
             layerCount: 4,
             layers: Vec::new(),
         };
 
-        for i in 0..max.layerCount {
+        for i in 0..maai.layerCount {
             let layer = Layer::new(i);
-            max.layers.push(layer);
+            maai.layers.push(layer);
         }
 
-        for layerIndex in 0..max.layers.len() {
-            for layerHeight in 0..max.layers[layerIndex].height {
+        for layerIndex in 0..maai.layers.len() {
+            for layerHeight in 0..maai.layers[layerIndex].height {
                 let neuron = Neuron {
                     activation: rng.gen::<f64>(),
-                    layerIndex: max.layers[layerIndex].index,
+                    layerIndex: maai.layers[layerIndex].index,
                 };
 
                 // NEXT LAYER FOR WEIGHT BRIDGE
-                if layerIndex + 1 >= max.layers.len() {
+                if layerIndex + 1 >= maai.layers.len() {
                     break;
                 }
 
                 let nextNeuron = Neuron {
                     activation: rng.gen::<f64>(),
-                    layerIndex: max.layers[layerIndex + 1].index,
+                    layerIndex: maai.layers[layerIndex + 1].index,
                 };
 
                 let mut weight = Weight {
@@ -47,24 +47,24 @@ impl Max {
                     bias: rng.gen::<f64>(),
                     startNeuron: neuron,
                     endNeuron: nextNeuron,
-                    layerIndex: max.layers[layerIndex + 1].index,
+                    layerIndex: maai.layers[layerIndex + 1].index,
                 };
 
                 let mut sum: f64 = 0.0;
-                for weightIndex in 0..max.layers[layerIndex].weights.len() {
-                    sum += max.layers[layerIndex].weights[weightIndex].value
-                        * max.layers[layerIndex].weights[weightIndex]
+                for weightIndex in 0..maai.layers[layerIndex].weights.len() {
+                    sum += maai.layers[layerIndex].weights[weightIndex].value
+                        * maai.layers[layerIndex].weights[weightIndex]
                             .startNeuron
                             .activation;
                 }
 
                 weight.endNeuron.activation += relu(sum - weight.bias);
 
-                max.layers[layerIndex].weights.push(weight);
+                maai.layers[layerIndex].weights.push(weight);
             }
         }
 
-        return max;
+        return maai;
     }
 
     pub fn run(&self) {

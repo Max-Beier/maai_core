@@ -5,7 +5,7 @@ pub struct Data {
 
 impl Data {
     pub fn start(&self) {
-        let runner = Max::new(self.payload.clone());
+        let runner = Maai::new(self.payload.clone());
         runner.run();
     }
 }
