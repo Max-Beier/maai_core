@@ -56,7 +56,7 @@ impl Max {
                             .activation;
                 }
 
-                weight.endNeuron.activation += sigmoid(sum - weight.bias);
+                weight.endNeuron.activation += relu(sum - weight.bias);
 
                 max.layers[layerIndex].weights.push(weight);
             }
@@ -70,6 +70,10 @@ impl Max {
     }
 }
 
-fn sigmoid(x: f64) -> f64 {
-    return 1.0 / (1.0 + f64::exp(-x));
+fn relu(v: f64) -> f64 {
+    if v >= 0.0 {
+        v
+    } else {
+        0.01 * v
+    }
 }
