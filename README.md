@@ -10,4 +10,4 @@ Just simply use the `cargo run MAAI` command in the project directory.
 - Canvas drawing system
 - Training (big term) for tweaking weights and biases
 - Add Discord API for Discord service
-  - Add websocket http server for socket connection
+  - Add http server for socket connection
