@@ -1,4 +1,4 @@
-use crate::core::utils::weight::*;
+use crate::core::weight::Weight;
 
 #[derive(Debug)]
 pub struct Layer {
