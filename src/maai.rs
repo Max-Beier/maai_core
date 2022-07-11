@@ -1,5 +1,4 @@
-use std::fs::File;
-use std::io::prelude::*;
+use std::fs::{self};
 
 use rand::Rng;
 
@@ -69,11 +68,6 @@ impl Maai {
 
                 weight.end_neuron.activation += relu(sum - weight.bias);
                 maai.layers[layer_index].weights.push(weight);
-
-                let mut file =
-                    File::open("../cache/cache.maai").expect("Can't open '../cache/cache.maai'");
-
-                _ = file.write(b"maai.layers").unwrap();
             }
         }
         maai
@@ -90,4 +84,15 @@ fn relu(v: f64) -> f64 {
     } else {
         0.01 * v
     }
+}
+
+fn get_cache() -> fs::File {
+    let file: fs::File;
+    if fs::metadata("../cache/").is_err() {
+        fs::create_dir("../cache").unwrap();
+        file = fs::File::create("../cache/cache.maai").unwrap();
+    } else {
+        file = fs::File::open("../cache/cache.maai").unwrap();
+    }
+    file
 }
