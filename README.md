@@ -11,7 +11,7 @@ maai_core is an open source AI that is written in rust. It is more focused on be
 
 ### Using the crate
 
-Just make a new instance of Maai and let the `new()` method deal with the rest.
+Just make a new instance of `Maai` and let the `new()` method deal with the rest.
 
 ```rust
 use maai_core::Maai;
