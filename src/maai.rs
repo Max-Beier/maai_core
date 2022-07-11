@@ -17,7 +17,7 @@ impl Maai {
         for layer in &self.layers {
             for height_index in 0..layer.weights.len() {
                 n += height_index as f64;
-                v += layer.weights[height_index].value;
+                v += (layer.weights[height_index].value - 0.0).sqrt();
             }
         }
         v / n
