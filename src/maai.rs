@@ -1,6 +1,5 @@
-use std::fs::{self};
-
 use rand::Rng;
+use std::fs;
 
 use crate::core::layer::Layer;
 use crate::core::neuron::Neuron;
@@ -40,13 +39,13 @@ impl Maai {
 
         for layer_index in 0..maai.layers.len() {
             for neuron_index in 0..maai.layers[layer_index].height {
-                let neuron = Neuron {
+                let start_neuron = Neuron {
                     activation: rng.gen::<f64>(),
                     index: neuron_index,
                     layer_index: maai.layers[layer_index].index,
                 };
 
-                let next_neuron = Neuron {
+                let end_neuron = Neuron {
                     activation: rng.gen::<f64>(),
                     index: neuron_index,
                     layer_index: maai.layers[layer_index].index + 1,
@@ -56,9 +55,9 @@ impl Maai {
                     index: maai.layers[layer_index].height as u8,
                     value: rng.gen::<f64>(),
                     bias: rng.gen::<f64>(),
-                    start_neuron: neuron,
-                    end_neuron: next_neuron,
-                    layer_index: maai.layers[layer_index].index + 1,
+                    start_neuron: start_neuron,
+                    end_neuron: end_neuron,
+                    layer_index: maai.layers[layer_index].index,
                 };
 
                 let mut sum: f64 = 0.0;
@@ -90,6 +89,8 @@ fn get_cache() -> fs::File {
     let file: fs::File;
     if fs::metadata("../cache/").is_err() {
         fs::create_dir("../cache").unwrap();
+        file = fs::File::create("../cache/cache.maai").unwrap();
+    } else if fs::metadata("../cache/cache.maai").is_err() {
         file = fs::File::create("../cache/cache.maai").unwrap();
     } else {
         file = fs::File::open("../cache/cache.maai").unwrap();
