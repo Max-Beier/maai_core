@@ -1,4 +1,4 @@
-# maai-core
+# maai_core
 
 
 [![Crates.io](https://img.shields.io/crates/v/maai-core)](https://crates.io/crates/maai-core)
@@ -6,4 +6,4 @@
 
 
 
-maai-core is an open source AI that is written in rust. It is more focused on being lightweight and speedy
+maai_core is an open source AI that is written in rust. It is more focused on being lightweight and speedy
