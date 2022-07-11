@@ -71,7 +71,7 @@ impl Maai {
                 maai.layers[layer_index].weights.push(weight);
 
                 let mut file =
-                    File::open("./data/data.maai").expect("Can't open './data/data.maai'");
+                    File::open("../cache/cache.maai").expect("Can't open '../cache/cache.maai'");
 
                 _ = file.write(b"maai.layers").unwrap();
             }
