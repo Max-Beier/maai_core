@@ -7,3 +7,18 @@
 
 
 maai_core is an open source AI that is written in rust. It is more focused on being lightweight and speedy
+
+
+### Using the crate
+
+Just make a new instance of Maai and let the `new()` method deal with the rest.
+
+```rust
+use maai_core::Maai;
+
+fn main() {
+    let payload: Vec<f64> = Vec::new();
+
+    let my_ai = Maai::new(payload);
+}
+```
