@@ -1,11 +1,13 @@
+pub mod maai;
+
 use std::fs::File;
 use std::io::prelude::*;
+
+use rand::Rng;
 
 use crate::core::layer::Layer;
 use crate::core::neuron::Neuron;
 use crate::core::weight::Weight;
-
-use rand::Rng;
 
 pub struct Maai {
     pub input_payload: Vec<Vec<f64>>,
