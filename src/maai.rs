@@ -6,7 +6,6 @@ use crate::core::neuron::Neuron;
 use crate::core::weight::Weight;
 
 pub struct Maai {
-    pub input_payload: Vec<f64>,
     pub layer_count: i32,
     layers: Vec<Layer>,
 }
@@ -18,7 +17,7 @@ impl Maai {
         for layer in &self.layers {
             for height_index in 0..layer.weights.len() {
                 n += height_index as f64;
-                v += layer.weights[height_index].value;
+                v += (layer.weights[height_index].end_neuron.activation - 0.0).sqrt();
             }
         }
         v / n
@@ -27,7 +26,6 @@ impl Maai {
     pub fn new(input: Vec<f64>) -> Maai {
         let mut rng = rand::thread_rng();
         let mut maai = Maai {
-            input_payload: input,
             layer_count: 4,
             layers: Vec::new(),
         };
@@ -39,21 +37,38 @@ impl Maai {
 
         for layer_index in 0..maai.layers.len() {
             for neuron_index in 0..maai.layers[layer_index].height {
-                let start_neuron = Neuron {
-                    activation: rng.gen::<f64>(),
-                    index: neuron_index,
-                    layer_index: maai.layers[layer_index].index,
-                };
+                let start_neuron: Neuron;
+                let end_neuron: Neuron;
+                let mut weight: Weight;
 
-                let end_neuron = Neuron {
+                if layer_index == 0 {
+                    if neuron_index < input.len() as i32 {
+                        start_neuron = Neuron {
+                            activation: input[(neuron_index as usize)],
+                            index: neuron_index,
+                            layer_index: maai.layers[layer_index].index,
+                        }
+                    } else {
+                        continue;
+                    }
+                } else {
+                    start_neuron = Neuron {
+                        activation: rng.gen::<f64>(),
+                        index: neuron_index,
+                        layer_index: maai.layers[layer_index].index,
+                    };
+                }
+
+                end_neuron = Neuron {
                     activation: rng.gen::<f64>(),
                     index: neuron_index,
                     layer_index: maai.layers[layer_index].index + 1,
                 };
 
-                let mut weight = Weight {
+                weight = Weight {
                     index: maai.layers[layer_index].height as u8,
                     value: rng.gen::<f64>(),
+                    shift_value: rng.gen::<f64>(),
                     bias: rng.gen::<f64>(),
                     start_neuron: start_neuron,
                     end_neuron: end_neuron,
