@@ -8,25 +8,25 @@ use crate::core::neuron::Neuron;
 use crate::core::weight::Weight;
 
 pub struct Maai {
-    pub input_payload: Vec<Vec<f64>>,
+    pub input_payload: Vec<f64>,
     pub layer_count: i32,
-    pub layers: Vec<Layer>,
+    layers: Vec<Layer>,
 }
 
 impl Maai {
     pub fn get_cost(&self) -> f64 {
         let mut v: f64 = 0.0;
         let mut n: f64 = 0.0;
-        for layer_index in 0..self.layers.len() {
-            for height_index in 0..self.layers[layer_index].weights.len() {
+        for layer in &self.layers {
+            for height_index in 0..layer.weights.len() {
                 n += height_index as f64;
-                v += self.layers[layer_index].weights[height_index].value;
+                v += layer.weights[height_index].value;
             }
         }
         v / n
     }
 
-    pub fn new(input: Vec<Vec<f64>>) -> Maai {
+    pub fn new(input: Vec<f64>) -> Maai {
         let mut rng = rand::thread_rng();
         let mut maai = Maai {
             input_payload: input,
