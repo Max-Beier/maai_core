@@ -1,3 +1,3 @@
 mod maai;
 
-pub use crate::maai::Maai;
+use maai::Maai;
