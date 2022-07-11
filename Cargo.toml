@@ -1,6 +1,6 @@
 [package]
 name = "maai_core"
-version = "0.0.31"
+version = "0.0.0"
 edition = "2021"
 description = "maai_core is the core system of the MAAI infrastructure"
 license = "MIT"

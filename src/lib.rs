@@ -1,3 +1,4 @@
+mod core;
 mod maai;
 
-use maai::Maai;
+pub use crate::maai::Maai;
