@@ -17,7 +17,7 @@ impl Maai {
         for layer in &self.layers {
             for height_index in 0..layer.weights.len() {
                 n += height_index as f64;
-                v += (layer.weights[height_index].value - 0.0).sqrt();
+                v += (layer.weights[height_index].end_neuron.activation - 0.0).sqrt();
             }
         }
         v / n
@@ -68,6 +68,7 @@ impl Maai {
                 weight = Weight {
                     index: maai.layers[layer_index].height as u8,
                     value: rng.gen::<f64>(),
+                    shift_value: rng.gen::<f64>(),
                     bias: rng.gen::<f64>(),
                     start_neuron: start_neuron,
                     end_neuron: end_neuron,
