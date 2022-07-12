@@ -5,6 +5,7 @@ pub struct Weight {
     pub index: u8,
     pub value: f64,
     pub shift_value: f64,
+    pub aim_value: f64,
     pub bias: f64,
     pub start_neuron: Neuron,
     pub end_neuron: Neuron,

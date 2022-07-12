@@ -11,13 +11,14 @@ pub struct Maai {
 }
 
 impl Maai {
-    pub fn get_cost(&self) -> f64 {
+    pub fn get_accuracy(&self) -> f64 {
         let mut v: f64 = 0.0;
         let mut n: f64 = 0.0;
         for layer in &self.layers {
             for height_index in 0..layer.weights.len() {
+                let weight: &Weight = &layer.weights[height_index];
                 n += height_index as f64;
-                v += (layer.weights[height_index].end_neuron.activation - 0.0).sqrt();
+                v += cost(weight.end_neuron.activation, weight.aim_value);
             }
         }
         v / n
@@ -69,6 +70,7 @@ impl Maai {
                     index: maai.layers[layer_index].height as u8,
                     value: rng.gen::<f64>(),
                     shift_value: rng.gen::<f64>(),
+                    aim_value: rng.gen_range(0.0..1.0),
                     bias: rng.gen::<f64>(),
                     start_neuron: start_neuron,
                     end_neuron: end_neuron,
@@ -88,7 +90,7 @@ impl Maai {
     }
 
     pub fn run(&self) {
-        println!("{:?}", self.get_cost());
+        println!("{:?}", self.get_accuracy());
     }
 }
 
@@ -98,6 +100,10 @@ fn relu(v: f64) -> f64 {
     } else {
         0.01 * v
     }
+}
+
+fn cost(activation: f64, aim_value: f64) -> f64 {
+    (activation - aim_value).sqrt()
 }
 
 fn get_cache() -> fs::File {
