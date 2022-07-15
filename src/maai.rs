@@ -10,14 +10,26 @@ pub struct Maai {
 
 impl Maai {
     /// For the maai system you have to specify how much `Layers` and `Neurons [per Layer]` you would like to use.
-    pub fn new(payload: Vec<f64>, layer_count: u32, neuron_count: u32) -> Maai {
+    pub fn new(
+        payload: Vec<f64>,
+        layer_count: u32,
+        neuron_count: u32,
+        output_layer_neuron_count: u32,
+    ) -> Maai {
         let mut maai = Maai {
             layers: Vec::new(),
             learning_rate: 2.0,
         };
 
         for index in 0..layer_count {
-            let layer_instance = Layer::new(&maai.layers, index, neuron_count, &payload);
+            let layer_instance = Layer::new(
+                &maai.layers,
+                index,
+                layer_count,
+                neuron_count,
+                output_layer_neuron_count,
+                &payload,
+            );
             maai.layers.push(layer_instance);
         }
 
