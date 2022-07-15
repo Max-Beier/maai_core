@@ -29,11 +29,14 @@ impl Layer {
         if index == 0 {
             let payload: &Vec<f64> = payload;
             for input_layer_index in payload {
-                let neuron = Neuron {
+                let mut neuron = Neuron {
                     activation: 0.0,
                     index: *input_layer_index as u32,
                     layer_index: index,
+                    weights_from: Vec::new(),
+                    weights_values: Vec::new(),
                 };
+                connect_to_network(&mut neuron, layers);
                 layer.neurons.push(neuron);
             }
             return layer;
@@ -42,11 +45,14 @@ impl Layer {
         // CREATES OUTPUT LAYER
         if index == layer_count - 1 {
             for output_layer_index in 0..output_layer_neuron_count {
-                let neuron = Neuron {
+                let mut neuron = Neuron {
                     activation: 0.0,
                     index: output_layer_index,
                     layer_index: index,
+                    weights_from: Vec::new(),
+                    weights_values: Vec::new(),
                 };
+                connect_to_network(&mut neuron, layers);
                 layer.neurons.push(neuron);
             }
             return layer;
@@ -54,11 +60,14 @@ impl Layer {
 
         // CREATES HIDDEN LAYER
         for hidden_layer_index in 0..neuron_count {
-            let neuron = Neuron {
+            let mut neuron = Neuron {
                 activation: 0.0,
                 index: hidden_layer_index,
                 layer_index: index,
+                weights_from: Vec::new(),
+                weights_values: Vec::new(),
             };
+            connect_to_network(&mut neuron, layers);
             layer.neurons.push(neuron);
         }
         layer
@@ -71,5 +80,16 @@ fn relu(v: f64) -> f64 {
         v
     } else {
         0.01 * v
+    }
+}
+
+fn connect_to_network(neuron: &mut Neuron, layers: &Vec<Layer>) {
+    if neuron.layer_index == 0 {
+        return;
+    }
+
+    for n in layers[neuron.layer_index as usize - 1].neurons.iter() {
+        neuron.weights_from.push(n.index);
+        neuron.weights_values.push(n.activation);
     }
 }
