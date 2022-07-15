@@ -11,7 +11,7 @@ pub struct Layer {
 
 impl Layer {
     pub fn new(
-        layers: &Vec<Layer>,
+        #[allow(unused_variables)] layers: &Vec<Layer>,
         index: u32,
         layer_count: u32,
         neuron_count: u32,
@@ -44,7 +44,7 @@ impl Layer {
             for output_layer_index in 0..output_layer_neuron_count {
                 let neuron = Neuron {
                     activation: 0.0,
-                    index: output_layer_index as u32,
+                    index: output_layer_index,
                     layer_index: index,
                 };
                 layer.neurons.push(neuron);
@@ -53,11 +53,19 @@ impl Layer {
         }
 
         // CREATES HIDDEN LAYER
-
+        for hidden_layer_index in 0..neuron_count {
+            let neuron = Neuron {
+                activation: 0.0,
+                index: hidden_layer_index,
+                layer_index: index,
+            };
+            layer.neurons.push(neuron);
+        }
         layer
     }
 }
 
+#[allow(dead_code)]
 fn relu(v: f64) -> f64 {
     if v >= 0.0 {
         v
