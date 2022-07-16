@@ -17,10 +17,12 @@ Just make a new instance of `Maai` and let the `new()` method deal with the rest
 use maai_core::Maai;
 
 fn main() {
-    let payload: Vec<f64> = vec![1.0, 1.0];
+    let payload: Vec<f64> = vec![1.0, 1.0, 1.0];
 
-    let _my_ai = Maai::new(payload, 512, 16, 4);
+    let _my_ai = Maai::new(512, payload.len(), 16, 4);
+    let result = _my_ai.out(payload);
     _my_ai.inspect();
-}
 
+    //...
+}
 ```
